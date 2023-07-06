@@ -11,7 +11,7 @@
 
 - 所以我们给资产下一个定义，就生活中大家看到的东西都可以理解为一种资产，比如，你写的朋友圈，微博知乎文章，这里就泛化了资产的定义，万物都是资产（Sui的 everything is NFT），资产都能找到一个归属（所有权）
 
-## rust 所有权的理解
+## rust 所有权的理解借鉴
 ```rust
 struct Blog {
     message: String,
@@ -48,7 +48,7 @@ fn main(){
     let int = 1;
     let int_copy = int;
     
-    // 这个不会报错了 问什么
+    // 这个不会报错了 为什么
 }
 ```
 - 大家写rust的时候很容易迷糊为啥有时候我把一个变量传递给了另外一个变量，前一个变量还能使用，这里就要好好理解copy特质了，内置的基础类型，
@@ -104,6 +104,77 @@ Sui上的资产模型就是这样的 维护了一个全局的 HashMap 结构，�
 入门move只需要三天到一周，你就是一个合格的Move开发者了，当然10年磨一剑，我说起来很容易，现实开发的时候涉及思维的转变和对资产的重要性
 评估不足，可能会低估Move合约代码的难度和安全的重要性，因为资产很重要，假如你写的不好的话涉及的资产可能是几百万上千万上亿在区块链领域都很正常
 所以大家如果对Move感兴趣，学习rust的时候可以多做一些思考，把变量实例类别成资产，这个资产是1亿人民币，你需要小心翼翼的处理
+
+
+
+## rust生命周期借鉴
+
+还是继续用上面说的例子，因为大家看得比较熟悉了
+
+```rust
+struct Blog {
+    message: String,
+}
+
+impl Blog {
+    pub fn new() -> Self {
+        Self {
+            message: "Move to Moon".to_string(),
+        }
+    }
+}
+
+fn main(){
+    let blog = Blog::new();
+}
+```
+
+- 大家可以看到 `blog` 这个变量虽然拥有了 Blog创建的实例的所有权，但是程序运行结束后，`blog`他就消失，编译器也会自动插入析构函数回收资源（正常结束的），其实是程序结束计算机自动回收了
+- 这就是一个简单的生命周期的理解，就是判断变量持有的资产(资源存活了多久)，我们前面说过Move有这种资产，就是在一个事务里面创建和必须销毁的资源，没有任何能力的Move资源，他的生命周期就是一个交易
+- 大家都知道，资产类似银行账号，他就是在哪里，不会因为你的程序运行结束，而结束你的资产生命周期，
+- 所以Sui Move发明了一个 `key` 的能力，表示你的资产的生命周期可以放到链上，并且可以检索得到，大大延长了 资产的生命周期
+- 还有一个 有趣的 `store` ，我们还是以rust代码为例子
+```rust
+fn main(){
+
+    let a = A{ a:10};
+    let b = B{ a };
+    
+}
+
+ struct  A {
+     a:u64
+ }
+ 
+ struct  B {
+     a: A
+ }
+```
+`store` 能力的简单解释就是可以把一个变量实例（资产）放入到另外一个资产里面去
+```rust
+    /// A coin of type `T` worth `value`. Transferable and storable
+    struct Coin<phantom T> has key, store {
+        id: UID,
+        balance: Balance<T>
+    }
+
+   struct SafeBox<phantom T> has key, store {
+      id: UID,
+      coin: Coin<T>
+   }
+
+   struct House<phantom T> has key, store {
+      id: UID,
+      safe_box: SafeBox<T>
+   }
+
+```
+- 这里的例子可以看到 我们能把你的硬币放到保险柜里面，把保险柜放到房子里面，实现资产的轻松组合，生活中资产的自由组合就能轻松实现
+- 你一定会想，我的资产就是独一无二的，比如你的身份证，不想和你老婆的身份证组合起来变成另外一个东西，你就可以不加store
+- 当然我举得特性都是匆匆一瞥，更多的特性组合和美妙的地方需要大家学完rust后在深入了解move
+  
+
+
 
 
 ## move 语言简介
