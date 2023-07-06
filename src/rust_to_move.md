@@ -130,6 +130,12 @@ Sui上的资产模型就是这样的 维护了一个全局的 HashMap 结构，�
 插播一个小广告 Sui 和Sui的合作伙伴他们在招人
 - https://jobs.sui.io/jobs
 
+例子
+- https://github.com/MystenLabs/sui/tree/main/sui_programmability/examples
+
+为什么Move 不一样 引用一下周润天老师还没发布的Blog，提前偷跑一下手稿
+- https://aptoslabs.notion.site/aptoslabs/Move-0df641393a924d18adaf23956e921371
+
 
 
 
