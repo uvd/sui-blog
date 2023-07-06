@@ -152,6 +152,11 @@ fn main(){
 ```
 `store` 能力的简单解释就是可以把一个变量实例（资产）放入到另外一个资产里面去
 ```rust
+
+    struct Balance<phantom T> has store {
+        value: u64
+    }
+    
     /// A coin of type `T` worth `value`. Transferable and storable
     struct Coin<phantom T> has key, store {
         id: UID,
