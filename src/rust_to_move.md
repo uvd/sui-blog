@@ -203,14 +203,25 @@ fn main(){
  因为我本身不是rust开发人员我就找一个熟悉一点的带你库大大家一起看看
 - https://github.com/MystenLabs/sui/tree/main/crates/sui-indexer
 
-插播一个小广告 Sui 和Sui的合作伙伴他们在招人
-- https://jobs.sui.io/jobs
+
 
 例子
 - https://github.com/MystenLabs/sui/tree/main/sui_programmability/examples
 
 为什么Move 不一样 引用一下周润天老师还没发布的Blog，提前偷跑一下手稿
 - https://aptoslabs.notion.site/aptoslabs/Move-0df641393a924d18adaf23956e921371
+
+
+插播一个小广告 Sui 和Sui的合作伙伴他们在招人
+- https://jobs.sui.io/jobs
+
+
+apac 
+- https://linktr.ee/sui_apac
+
+![Sui技术交流群](11.png)
+
+
 
 
 
